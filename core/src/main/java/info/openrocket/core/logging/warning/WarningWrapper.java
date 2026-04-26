@@ -1,20 +1,10 @@
 package info.openrocket.core.logging.warning;
 
 /**
- * An Interface for the wrappers of warning messages.
+ * Interface for Warning Message Wrappers. Generates the warnings at runtime based on user preferences.
  */
 public interface WarningWrapper {
-    /**
-     * Gets the unique id of the warning, used at runtime to specify what type of warning to create (ensuring only the
-     * unique id needs to be recorded in the .ork).
-     * @return The warning's unique id.
-     */
-    String getWarningId();
+    //TODO need to look into deserializing for the params of the warning
+    String generateWarning();
 
-    /**
-     * Generates the final warning string (based on the preferences of the user) via a given set of params.
-     * @throws IllegalArgumentException Thrown when the params do not contain the expected items in the expected order.
-     * @return The generated warning.
-     */
-    String generateWarning(Object[] params) throws IllegalArgumentException;
 }
