@@ -1,9 +1,6 @@
 package info.openrocket.core.logging.warning;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WarningManager {
 
@@ -16,40 +13,40 @@ public class WarningManager {
         return instance;
     }
 
-    private final Map<String, WarningFactory> warningWrappers = new HashMap<>();
-    private final Map<String,WarningWrapper> warningMessages = new HashMap<>();
+    private final Map<WarningType, WarningFactory> warningFactories = new HashMap<>();
+    private final Map<UUID,WarningWrapper> warningWrappers = new HashMap<>();
 
     private WarningManager(){}
 
     public void registerWrapper(WarningFactory wrapper){
-        warningWrappers.put(wrapper.getWarningId(), wrapper);
+        warningFactories.put(wrapper.getWarningType(), wrapper);
     }
 
-    public void addWarning(String warningId, Object[] params) throws IllegalArgumentException {
-        if(!warningWrappers.containsKey(warningId)){
-            throw new IllegalArgumentException("Warning with id of " + warningId + " not found!");
+    public void addWarning(WarningType warningType, UUID warningId, Object[] params) throws IllegalArgumentException {
+        if(!warningFactories.containsKey(warningType)){
+            throw new IllegalArgumentException("Warning with id of " + warningType + " not found!");
         }
-        WarningFactory warning = warningWrappers.get(warningId);
+        WarningFactory factory = warningFactories.get(warningType);
         try{
-           warningMessages.put(warningId,warning.generateWarning(params));
+           warningWrappers.put(warningId,factory.generateWarning(params));
         }
         catch(IllegalArgumentException e){
             //TODO might need to make a custom exception, seems silly to throw a illegal in an a catch for an illegal
-            throw new IllegalArgumentException(generateIllegalArgumentInfo(warning, params));
+            throw new IllegalArgumentException(generateIllegalArgumentInfo(factory, params));
         }
     }
 
-    public void clearWarning(String warningId){
-        warningMessages.remove(warningId);
+    public void clearWarning(UUID warningId){
+        warningWrappers.remove(warningId);
     }
 
     public void clearWarnings(){
-        warningMessages.clear();
+        warningWrappers.clear();
     }
 
     public List<String> getWarnings(){
         List<String> warnings = new ArrayList<>();
-        warningMessages.values().forEach(wrapper -> warnings.add(wrapper.generateWarning()));
+        warningWrappers.values().forEach(wrapper -> warnings.add(wrapper.generateWarning()));
         return warnings;
     }
 

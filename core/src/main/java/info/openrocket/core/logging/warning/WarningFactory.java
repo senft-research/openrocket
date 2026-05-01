@@ -5,11 +5,11 @@ package info.openrocket.core.logging.warning;
  */
 public interface WarningFactory {
     /**
-     * Gets the unique id of the warning, used at runtime to specify what type of warning to create (ensuring only the
-     * unique id needs to be recorded in the .ork).
+     * Gets the unique type of the warnings created using this wrapper, used at runtime to specify what type of
+     * warning to create (ensuring only the warning type needs to be recorded in the .ork).
      * @return The warning's unique id.
      */
-    String getWarningId();
+    WarningType getWarningType();
 
     /**
      * Generates the final warning string (based on the preferences of the user) via a given set of params.
