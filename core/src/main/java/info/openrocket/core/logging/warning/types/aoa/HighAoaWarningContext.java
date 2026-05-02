@@ -1,10 +1,13 @@
 package info.openrocket.core.logging.warning.types.aoa;
 
-import info.openrocket.core.logging.warning.WarningContext;
 import info.openrocket.core.logging.warning.types.AbstractWarningContext;
 
 public class HighAoaWarningContext extends AbstractWarningContext {
-    double angleOfAttack;
+    private double angleOfAttack;
+
+    public double getAngleOfAttack(){
+        return angleOfAttack;
+    }
 
     public static class HighAoaWarningContextBuilder
             extends WarningContextBuilder<HighAoaWarningContextBuilder> {
@@ -14,6 +17,11 @@ public class HighAoaWarningContext extends AbstractWarningContext {
         @Override
         protected HighAoaWarningContextBuilder getSelf() {
             return this;
+        }
+
+        public HighAoaWarningContextBuilder setAngleOfAttack(double angleOfAttack){
+            this.angleOfAttack = angleOfAttack;
+            return getSelf();
         }
 
         @Override

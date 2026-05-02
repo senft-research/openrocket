@@ -1,5 +1,6 @@
 package info.openrocket.core.logging.warning;
 
+import info.openrocket.core.logging.warning.types.aoa.HighAoaWarningFactory;
 import info.openrocket.core.rocketcomponent.RocketComponent;
 
 import java.util.*;
@@ -19,6 +20,7 @@ public class WarningManager {
     private final Map<UUID, WarningWrapper> warningWrappers = new HashMap<>();
 
     private WarningManager() {
+        warningFactories.put(WarningType.HIGH_ANGLE_OF_ATTACK, new HighAoaWarningFactory());
     }
 
     public void registerWrapper(WarningFactory<?> wrapper) {
@@ -32,6 +34,7 @@ public class WarningManager {
         }
         WarningFactory<?> factory = warningFactories.get(warningType);
         WarningWrapper wrapper = handleFactory(factory, context);
+        this.warningWrappers.put(wrapper.getWarningId(), wrapper);
     }
 
     private <T extends WarningContext> WarningWrapper handleFactory(WarningFactory<T> factory, WarningContext context) {
