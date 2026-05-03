@@ -13,8 +13,22 @@ import java.util.UUID;
  * params to be saved per warning, whilst still ensuring user preferences (such as units) are still respected.
  */
 public interface WarningContext {
+    /**
+     * Gets the unique identifier of the Warning (used for easier identification throughout the primary Warning Logic)
+     * @return The Warning's unique id.
+     */
     UUID getWarningId();
+
+    /**
+     * Gets the warning type that this context represents.
+     * @return The context's warning type.
+     */
     WarningType getWarningType();
+
+    /**
+     * Gets the message priority of the warning message.
+     * @return The warning message's priority.
+     */
     MessagePriority  getPriority();
 
 }

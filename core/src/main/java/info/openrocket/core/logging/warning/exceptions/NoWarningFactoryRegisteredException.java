@@ -1,7 +1,9 @@
 package info.openrocket.core.logging.warning.exceptions;
 
+//TODO needs populating with actual Exception Logic
+
 /**
- * Exception Indicating when a {@linkplain info.openrocket.core.logging.warning.WarningType Warning Type} does not have
+ * Exception indicating when a {@linkplain info.openrocket.core.logging.warning.WarningType Warning Type} does not have
  * a corresponding {@linkplain info.openrocket.core.logging.warning.factories.WarningFactory Warning Factory}
  * registered to handle it.
  */
