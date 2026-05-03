@@ -1,7 +1,7 @@
 package info.openrocket.core.logging.warning;
 
+import info.openrocket.core.logging.Warning;
 import info.openrocket.core.logging.warning.types.aoa.HighAoaWarningFactory;
-import info.openrocket.core.rocketcomponent.RocketComponent;
 
 import java.util.*;
 
@@ -45,19 +45,10 @@ public class WarningManager {
                 ));
     }
 
-    public void addWarning(WarningType warningType, UUID warningId, RocketComponent... params) throws IllegalArgumentException {
-        if (!warningFactories.containsKey(warningType)) {
-            throw new IllegalArgumentException("Warning with id of " + warningType + " not found!");
-        }
-        WarningFactory factory = warningFactories.get(warningType);
-        try {
-            warningWrappers.put(warningId, factory.generateWarning(params));
-        } catch (IllegalArgumentException e) {
-            //TODO might need to make a custom exception, seems silly to throw a illegal in an a catch for an illegal
-            throw new IllegalArgumentException(generateIllegalArgumentInfo(factory, params));
-        }
+    public WarningWrapper getWarning(UUID warningId) {
+        //TODO rather than null we should throw exception
+        return this.warningWrappers.getOrDefault(warningId,null);
     }
-
     public void clearWarning(UUID warningId) {
         warningWrappers.remove(warningId);
     }
@@ -66,9 +57,17 @@ public class WarningManager {
         warningWrappers.clear();
     }
 
-    public List<String> getWarnings() {
+ /*   public List<String> getWarnings() {
         List<String> warnings = new ArrayList<>();
-        warningWrappers.values().forEach(wrapper -> warnings.add(wrapper.generateWarning()));
+        warningWrappers.values().forEach(wrapper -> warnings.add(wrapper.generateWarningString()));
+        return warnings;
+    }*/
+
+    public List<Warning> getWarnings(){
+        List<Warning> warnings = new ArrayList<>();
+        warningWrappers.forEach((uuid, warningWrapper) -> {
+            warnings.add(warningWrapper.generateWarning());
+        });
         return warnings;
     }
 

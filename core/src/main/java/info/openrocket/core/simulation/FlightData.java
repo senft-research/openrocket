@@ -1,7 +1,6 @@
 package info.openrocket.core.simulation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,7 @@ public class FlightData {
 	private final ArrayList<FlightDataBranch> branches = new ArrayList<>();
 	
 	private final WarningSet warnings = new WarningSet();
-	
+	private final Set<UUID> warningIds = new HashSet<>();
 	private double maxAltitude = Double.NaN;
 	private double maxVelocity = Double.NaN;
 	private double maxAcceleration = Double.NaN;
@@ -121,8 +120,7 @@ public class FlightData {
 	public WarningSet getWarningSet() {
 		return warnings;
 	}
-	
-	
+	public Set<UUID> getWarningIds() {return warningIds;}
 	public void addBranch(FlightDataBranch branch) {
 		mutable.check();
 		

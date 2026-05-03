@@ -1,5 +1,7 @@
 package info.openrocket.swing.gui.simulation;
 
+import info.openrocket.core.logging.MessagePriority;
+import info.openrocket.core.logging.warning.WarningManager;
 import net.miginfocom.swing.MigLayout;
 import info.openrocket.core.document.Simulation;
 import info.openrocket.swing.gui.components.StyledLabel;
@@ -100,7 +102,14 @@ public class SimulationWarningsPanel extends JPanel {
 	private static JPanel createWarningsPanel(final List<Warning> warnings, final Icon icon,
 											  final String titleText, final String descriptionText, Color textColor) {
 		JPanel panel = new JPanel(new MigLayout("fillx, insets 1"));
-
+		MessagePriority priority = warnings.get(0).getPriority();
+		warnings.addAll(
+				WarningManager.getInstance()
+						.getWarnings()
+						.stream()
+						.filter(warning -> warning.getPriority().equals(priority))
+						.toList()
+		);
 		// Title
 		float size = 2f;
 		int nrOfWarnings = warnings == null ? 0 : warnings.size();

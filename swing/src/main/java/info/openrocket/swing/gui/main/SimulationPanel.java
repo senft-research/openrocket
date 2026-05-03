@@ -22,13 +22,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -67,6 +61,7 @@ import info.openrocket.core.document.Simulation.Status;
 import info.openrocket.core.document.events.SimulationChangeEvent;
 import info.openrocket.core.formatting.RocketDescriptor;
 import info.openrocket.core.l10n.Translator;
+import info.openrocket.core.logging.warning.WarningManager;
 import info.openrocket.core.preferences.ApplicationPreferences;
 import info.openrocket.core.preferences.DocumentPreferences;
 import info.openrocket.core.rocketcomponent.FlightConfigurationId;
@@ -1359,7 +1354,10 @@ public class SimulationPanel extends JPanel {
 			setToolTipText(ttip);
 
 			WarningSet warnings = simulation.getSimulatedWarnings();
-
+			Set<UUID> warningIds = simulation.getWarningIds();
+			warningIds.forEach(warningId -> {
+				warnings.add(WarningManager.getInstance().getWarning(warningId).generateWarning());
+			});
 			if (warnings == null || warnings.isEmpty()) {
 				revalidate();
 				return;

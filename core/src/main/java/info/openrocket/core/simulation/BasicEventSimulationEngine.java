@@ -2,8 +2,13 @@ package info.openrocket.core.simulation;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.UUID;
 
 import info.openrocket.core.logging.SimulationAbort;
+import info.openrocket.core.logging.warning.WarningContext;
+import info.openrocket.core.logging.warning.WarningManager;
+import info.openrocket.core.logging.warning.WarningType;
+import info.openrocket.core.logging.warning.types.aoa.HighAoaWarningContext;
 import info.openrocket.core.masscalc.MassCalculator;
 import info.openrocket.core.masscalc.RigidBody;
 import info.openrocket.core.motor.ThrustCurveMotor;
@@ -313,7 +318,17 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 						} else {
 							// Stable, so warning about AOA
 							if (currentStatus.recordWarnings()) {
+								//TODO This does not take into account for the replace logic that normal warnings have.
+								//	   Hence, it will constantly replace the warning in the warning set.
 								currentStatus.addWarning(new Warning.LargeAOA(aoa));
+
+								UUID warningID = UUID.randomUUID();
+								WarningContext warningContext = new HighAoaWarningContext.HighAoaWarningContextBuilder()
+										.setWarningId(warningID)
+										.setWarningType(WarningType.HIGH_ANGLE_OF_ATTACK)
+										.setAngleOfAttack(aoa).build();
+								WarningManager.getInstance().addWarning(warningContext);
+
 							}
 						}
 					}
@@ -333,7 +348,7 @@ public class BasicEventSimulationEngine implements SimulationEngine {
 			currentStatus.getFlightDataBranch().addEvent(new FlightEvent(FlightEvent.Type.EXCEPTION, currentStatus.getSimulationTime(), currentStatus.getConfiguration().getRocket(), e.getLocalizedMessage()));
 
 			flightData.getWarningSet().addAll(currentStatus.getWarnings());
-			
+			flightData.getWarningIds().addAll(currentStatus.getWarningIds());
 			throw e;
 		}
 	}	

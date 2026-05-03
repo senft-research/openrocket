@@ -1,10 +1,7 @@
 package info.openrocket.core.document;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.EventListener;
-import java.util.EventObject;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import info.openrocket.core.simulation.FlightEvent;
 import org.slf4j.Logger;
@@ -550,6 +547,9 @@ public class Simulation implements ChangeSource, Cloneable {
 		if (simulatedData == null)
 			return null;
 		return simulatedData.getWarningSet();
+	}
+	public Set<UUID> getWarningIds() {
+		return simulatedData.getWarningIds();
 	}
 	
 	

@@ -1,12 +1,6 @@
 package info.openrocket.core.simulation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import info.openrocket.core.aerodynamics.FlightConditions;
 import info.openrocket.core.logging.SimulationAbort;
@@ -103,6 +97,8 @@ public class SimulationStatus implements Cloneable, Monitorable {
 	private final EventQueue eventQueue = new EventQueue();
 
 	private WarningSet warnings;
+
+	private final Set<UUID> warningIds = new HashSet<>();
 
 	/** Available for special purposes by the listeners. */
 	private final Map<String, Object> extraData = new HashMap<>();
@@ -443,6 +439,13 @@ public class SimulationStatus implements Cloneable, Monitorable {
 		if (this.warnings != null)
 			this.modIDadd = new ModID();
 		this.warnings = warnings;
+	}
+
+	public void addWarning(UUID warningId){
+		this.warningIds.add(warningId);
+	}
+	public Set<UUID> getWarningIds() {
+		return warningIds;
 	}
 
 	public void addWarning(Warning warning) {

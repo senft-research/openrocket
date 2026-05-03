@@ -1,5 +1,7 @@
 package info.openrocket.core.logging.warning;
 
+import info.openrocket.core.logging.Warning;
+
 import java.util.UUID;
 
 /**
@@ -7,7 +9,8 @@ import java.util.UUID;
  */
 public interface WarningWrapper {
     //TODO need to look into deserializing for the params of the warning
-    String generateWarning();
+    String generateWarningString();
+    Warning generateWarning();
 
     UUID getWarningId();
 
