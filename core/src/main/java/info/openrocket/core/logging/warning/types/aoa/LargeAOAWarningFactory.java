@@ -1,15 +1,14 @@
 package info.openrocket.core.logging.warning.types.aoa;
 
 import info.openrocket.core.logging.Warning;
-import info.openrocket.core.logging.warning.factories.WarningFactory;
+import info.openrocket.core.logging.warning.context.WarningContext;
+import info.openrocket.core.logging.warning.factories.AbstractWarningFactory;
+
 import info.openrocket.core.logging.warning.exceptions.NoWarningFactoryRegisteredException;
 
-public class LargeAOAWarningFactory implements WarningFactory<LargeAOAWarningContext> {
+public class LargeAOAWarningFactory extends AbstractWarningFactory<LargeAOAWarningContext> {
     @Override
-    public Warning createWarning(LargeAOAWarningContext context) throws NoWarningFactoryRegisteredException {
-        Warning warning = new Warning.LargeAOA(context.getAngleOfAttackRads());
-        warning.setPriority(context.getPriority());
-        warning.setID(context.getWarningId());
+    public Warning initWarning(LargeAOAWarningContext context) {
         return new Warning.LargeAOA(context.getAngleOfAttackRads());
     }
 }

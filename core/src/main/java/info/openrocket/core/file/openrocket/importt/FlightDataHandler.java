@@ -41,6 +41,9 @@ class FlightDataHandler extends AbstractElementHandler {
 		if (element.equals("warning")) {
 			return new WarningHandler(context.getOpenRocketDocument().getRocket(), warningSet);
 		}
+		if(element.equals("warningContext")){
+			return new WarningContextHandler(warningSet);
+		}
 		if (element.equals("databranch")) {
 			if (attributes.get("name") == null || attributes.get("types") == null) {
 				warnings.add("Illegal flight data definition, ignoring.");

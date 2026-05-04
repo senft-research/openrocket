@@ -1,18 +1,29 @@
 package info.openrocket.core.logging.warning.factories;
 
+import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.warning.WarningType;
 import info.openrocket.core.logging.warning.context.WarningContext;
 import info.openrocket.core.logging.warning.exceptions.NoContextFactoryRegisteredException;
+import info.openrocket.core.logging.warning.types.aoa.LargeAOAWarningContextFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Primary {@linkplain WarningContextFactory Warning Context Factory} responsible for the dynamic creation of Warning
  * Context instances for Simulation-Warnings stored in the flight data of .ork files.
  */
 public class SimulationWarningContextFactory implements WarningContextFactory {
+    private static SimulationWarningContextFactory instance;
 
+    public static synchronized SimulationWarningContextFactory getInstance() {
+        if (instance == null) {
+            instance = new SimulationWarningContextFactory();
+            instance.registerFactory(WarningType.LARGE_AOA, new LargeAOAWarningContextFactory());
+        }
+        return instance;
+    }
     //TODO It might be worth making the map store an array of factories (for the purposes of having legacy file formats
     //     able to be constructed via the same warning type? Though this might be over-engineering the solution...)
 
@@ -34,15 +45,12 @@ public class SimulationWarningContextFactory implements WarningContextFactory {
 
     //TODO refer to the todo inside WarningContextFactory.java
     @Override
-    public WarningContext create(WarningType warningType) {
+    public WarningContext create(MessagePriority priority, UUID warningId, WarningType warningType, Map<String, String> elements) {
         if(!factories.containsKey(warningType)){
             throw new NoContextFactoryRegisteredException("The Warning Type " + warningType.name()
                     + "has no registered context factory.");
         }
-        //TODO this is about as far as I can get without sorting out the XML logic side
         WarningContextFactory contextFactory = this.factories.get(warningType);
-
-
-        return null;
+        return contextFactory.create(priority, warningId, warningType, elements);
     }
 }

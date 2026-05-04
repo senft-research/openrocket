@@ -1,7 +1,11 @@
 package info.openrocket.core.logging.warning.factories;
 
+import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.warning.WarningType;
 import info.openrocket.core.logging.warning.context.WarningContext;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Interface representing a factory capable of constructing {@linkplain WarningContext Warning Context} Instances via
@@ -15,5 +19,5 @@ public interface WarningContextFactory {
      * @param warningType The warning type of the specified warning data.
      * @return The constructed Warning Context.
      */
-    WarningContext create(WarningType warningType);
+    WarningContext create(MessagePriority priority, UUID warningId, WarningType warningType, Map<String, String> elements);
 }
