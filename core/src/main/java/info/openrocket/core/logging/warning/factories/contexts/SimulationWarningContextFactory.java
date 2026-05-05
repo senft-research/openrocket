@@ -1,4 +1,4 @@
-package info.openrocket.core.logging.warning.factories;
+package info.openrocket.core.logging.warning.factories.contexts;
 
 import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.warning.WarningType;
@@ -24,8 +24,7 @@ public class SimulationWarningContextFactory implements WarningContextFactory {
         }
         return instance;
     }
-    //TODO It might be worth making the map store an array of factories (for the purposes of having legacy file formats
-    //     able to be constructed via the same warning type? Though this might be over-engineering the solution...)
+
 
     /**
      * Map that stores the various Warning Context Factories for each specified Warning Type Key. This way each set of

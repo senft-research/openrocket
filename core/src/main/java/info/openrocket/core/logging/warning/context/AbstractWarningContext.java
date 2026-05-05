@@ -3,6 +3,7 @@ package info.openrocket.core.logging.warning.context;
 import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.warning.WarningType;
 import info.openrocket.core.logging.warning.exceptions.RequiredWarningContextParamsMissingException;
+import info.openrocket.core.logging.warning.factories.contexts.SimulationWarningContextFactory;
 
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public abstract class AbstractWarningContext implements WarningContext {
      *
      * <p> For example: If one wanted to add a unique parameter to a warning, an implementation of this builder
      * could implement a method for the parameter to be included in its construction, with no changes to the
-     * {@linkplain info.openrocket.core.logging.warning.factories.SimulationWarningContextFactory
+     * {@linkplain SimulationWarningContextFactory
      * Primary Context Factory} being required.
      * </p>
      * @param <T> Type parameter of the builder. This is a generics trick allows for a method that can return the impl

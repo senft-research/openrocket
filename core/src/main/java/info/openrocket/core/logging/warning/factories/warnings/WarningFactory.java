@@ -1,7 +1,8 @@
-package info.openrocket.core.logging.warning.factories;
+package info.openrocket.core.logging.warning.factories.warnings;
 
 import info.openrocket.core.logging.Warning;
 import info.openrocket.core.logging.warning.context.WarningContext;
+import info.openrocket.core.logging.warning.exceptions.InvalidWarningCreationException;
 import info.openrocket.core.logging.warning.exceptions.NoWarningFactoryRegisteredException;
 
 /**
@@ -18,5 +19,5 @@ public interface WarningFactory {
      * @param context The context of the Warning to create.
      * @return The Created Warning
      */
-    Warning createWarning(WarningContext context) throws NoWarningFactoryRegisteredException;
+    Warning createWarning(WarningContext context) throws InvalidWarningCreationException;
 }

@@ -1,4 +1,4 @@
-package info.openrocket.core.logging.warning.factories;
+package info.openrocket.core.logging.warning.factories.contexts;
 
 import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.warning.WarningType;

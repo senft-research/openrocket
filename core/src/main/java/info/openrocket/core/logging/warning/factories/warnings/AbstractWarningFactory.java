@@ -1,14 +1,15 @@
-package info.openrocket.core.logging.warning.factories;
+package info.openrocket.core.logging.warning.factories.warnings;
 
 import info.openrocket.core.logging.Warning;
 import info.openrocket.core.logging.warning.context.WarningContext;
+import info.openrocket.core.logging.warning.exceptions.InvalidWarningCreationException;
 import info.openrocket.core.logging.warning.exceptions.NoWarningFactoryRegisteredException;
 
 public abstract class AbstractWarningFactory<T extends WarningContext> implements WarningFactory {
 
     //TODO sort out the registration throw in the interface, the interface doesnt have register methods...
     @Override
-    public Warning createWarning(WarningContext context) throws NoWarningFactoryRegisteredException {
+    public Warning createWarning(WarningContext context) throws InvalidWarningCreationException {
         try{
             Warning warning = initWarning(castContext(context));
             warning.setID(context.getWarningId());

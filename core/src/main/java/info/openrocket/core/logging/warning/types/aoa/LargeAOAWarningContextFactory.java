@@ -1,6 +1,6 @@
 package info.openrocket.core.logging.warning.types.aoa;
 
-import info.openrocket.core.logging.warning.factories.AbstractWarningContextFactory;
+import info.openrocket.core.logging.warning.factories.contexts.AbstractWarningContextFactory;
 
 import java.util.Map;
 

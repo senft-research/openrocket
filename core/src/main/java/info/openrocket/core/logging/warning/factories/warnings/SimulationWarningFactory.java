@@ -1,9 +1,9 @@
-package info.openrocket.core.logging.warning.factories;
+package info.openrocket.core.logging.warning.factories.warnings;
 
 import info.openrocket.core.logging.Warning;
 import info.openrocket.core.logging.warning.WarningType;
-import info.openrocket.core.logging.warning.context.AbstractWarningContext;
 import info.openrocket.core.logging.warning.context.WarningContext;
+import info.openrocket.core.logging.warning.exceptions.InvalidWarningCreationException;
 import info.openrocket.core.logging.warning.exceptions.NoWarningFactoryRegisteredException;
 import info.openrocket.core.logging.warning.types.aoa.LargeAOAWarningFactory;
 
@@ -28,11 +28,10 @@ public class SimulationWarningFactory implements WarningFactory {
     }
 
     @Override
-    public Warning createWarning(WarningContext context) throws NoWarningFactoryRegisteredException {
-        if (factories.containsKey(context.getWarningType())) {
-
-            return factories.get(context.getWarningType()).createWarning(context);
+    public Warning createWarning(WarningContext context) throws InvalidWarningCreationException {
+        if (!factories.containsKey(context.getWarningType())) {
+            throw new NoWarningFactoryRegisteredException(context);
         }
-        return null;
+        return factories.get(context.getWarningType()).createWarning(context);
     }
 }

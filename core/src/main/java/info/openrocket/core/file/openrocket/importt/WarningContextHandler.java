@@ -7,8 +7,8 @@ import info.openrocket.core.logging.MessagePriority;
 import info.openrocket.core.logging.WarningSet;
 import info.openrocket.core.logging.warning.WarningType;
 import info.openrocket.core.logging.warning.context.WarningContext;
-import info.openrocket.core.logging.warning.factories.SimulationWarningContextFactory;
-import info.openrocket.core.logging.warning.factories.SimulationWarningFactory;
+import info.openrocket.core.logging.warning.factories.contexts.SimulationWarningContextFactory;
+import info.openrocket.core.logging.warning.factories.warnings.SimulationWarningFactory;
 import org.xml.sax.SAXException;
 
 import java.util.HashMap;
