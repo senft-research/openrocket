@@ -8,7 +8,7 @@ public class LargeAOAWarningContext extends AbstractWarningContext {
         return this.angleOfAttackRads;
     }
 
-    public static class LargeAOAWarningContextBuilder extends AbstractWarningTypeBuilder<LargeAOAWarningContextBuilder>{
+    public static class LargeAOAWarningContextBuilder extends AbstractWarningContextBuilder<LargeAOAWarningContextBuilder> {
 
         private Double angleOfAttackRads;
 

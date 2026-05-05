@@ -42,7 +42,7 @@ public abstract class AbstractWarningContext implements WarningContext {
      * @param <T> Type parameter of the builder. This is a generics trick allows for a method that can return the impl
      *           of the builder, allowing for the impl-specific parameter methods to work as intended.
      */
-    public static abstract class AbstractWarningTypeBuilder<T extends AbstractWarningTypeBuilder<T>>{
+    public static abstract class AbstractWarningContextBuilder<T extends AbstractWarningContextBuilder<T>>{
         protected UUID warningId;
         protected WarningType warningType;
         protected MessagePriority priority;
@@ -64,17 +64,17 @@ public abstract class AbstractWarningContext implements WarningContext {
             return warningContext;
         }
 
-        public AbstractWarningTypeBuilder<T> withWarningId(UUID warningId) {
+        public AbstractWarningContextBuilder<T> withWarningId(UUID warningId) {
             this.warningId = warningId;
             return getSelf();
         }
 
-        public AbstractWarningTypeBuilder<T> withWarningType(WarningType warningType) {
+        public AbstractWarningContextBuilder<T> withWarningType(WarningType warningType) {
             this.warningType = warningType;
             return getSelf();
         }
 
-        public AbstractWarningTypeBuilder<T> withPriority(MessagePriority priority) {
+        public AbstractWarningContextBuilder<T> withPriority(MessagePriority priority) {
             this.priority = priority;
             return getSelf();
         }

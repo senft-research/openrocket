@@ -8,14 +8,13 @@ import info.openrocket.core.logging.warning.context.WarningContext;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class AbstractWarningContextFactory<T extends AbstractWarningContext.AbstractWarningTypeBuilder<?>> implements WarningContextFactory {
+public abstract class AbstractWarningContextFactory<T extends AbstractWarningContext.AbstractWarningContextBuilder<?>> implements WarningContextFactory {
     @Override
     public WarningContext create(MessagePriority priority, UUID warningId, WarningType warningType, Map<String, String> elements) {
-        AbstractWarningContext.AbstractWarningTypeBuilder<?> warningContextBuilder = initContext(elements);
-        warningContextBuilder.withWarningId(warningId);
-        warningContextBuilder.withWarningType(warningType);
-        warningContextBuilder.withPriority(priority);
-        return warningContextBuilder.build() ;
+        return initContext(elements)
+                .withWarningId(warningId)
+                .withWarningType(warningType)
+                .withPriority(priority).build();
     }
 
     protected abstract T initContext(Map<String,String> elements);
