@@ -380,7 +380,9 @@ public class ComponentPresetChooserDialog extends JDialog {
 		if (filterTextRegex != null) {
 			try {
 				// The "(?iu)" magic turns on case insensitivity with unicode chars
-				RowFilter<TableModel, Object> regexFilter = RowFilter.regexFilter("(?iu)" + filterTextRegex);
+				//TODO this is where the problem is, got to decide whether to just have it filter by manufacturer, or
+				//	   have some sort of filter tickbox to decide which columns to filter by? (issue-2374)
+				RowFilter<TableModel, Object> regexFilter = RowFilter.regexFilter("(?iu)" + filterTextRegex, 2);
 				filters.add(regexFilter);
 			} catch (java.util.regex.PatternSyntaxException e) {
 			}
