@@ -237,7 +237,7 @@ public class Quaternion implements Cloneable {
 	 * @throws IllegalStateException if the norm of this quaternion is zero.
 	 */
 	public Quaternion normalizeIfNecessary() {
-		double n2 = norm2();
+		double n2 = normSquare();
 		if (n2 < 0.999999 || n2 > 1.000001) {
 			return normalize();
 		} else {
@@ -262,7 +262,7 @@ public class Quaternion implements Cloneable {
 	 * 
 	 * @return the square of the norm of this quaternion (w^2 + x^2 + y^2 + z^2).
 	 */
-	public double norm2() {
+	public double normSquare() {
 		return x * x + y * y + z * z + w * w;
 	}
 
@@ -274,7 +274,7 @@ public class Quaternion implements Cloneable {
 	 * @return The rotated coordinate.
 	 */
 	public CoordinateIF rotate(CoordinateIF coordinate){
-		assert (Math.abs(norm2() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
+		assert (Math.abs(normSquare() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
 
 		Quaternion inverseQuat= new Quaternion(this.w, -this.x, -this.y, -this.z);
 		Quaternion coordinateQuat = new Quaternion(0, coordinate.getX(), coordinate.getY(), coordinate.getZ());
@@ -324,7 +324,7 @@ public class Quaternion implements Cloneable {
 	public CoordinateIF invRotate(CoordinateIF coord) {
 		double a, b, c, d;
 
-		assert (Math.abs(norm2() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
+		assert (Math.abs(normSquare() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
 
 		// (a,b,c,d) = (this)^-1 * coord = (w,-x,-y,-z) * (0,cx,cy,cz)
 		a = x * coord.getX() + y * coord.getY() + z * coord.getZ();
