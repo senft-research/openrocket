@@ -51,7 +51,25 @@ public class Quaternion implements Cloneable {
 
 	//////// End debug section
 
-	private final double w, x, y, z;
+	/**
+	 * The scalar component of the Quaternion, typically indicating the angle of rotation around the axis
+	 */
+	private final double w;
+
+	/**
+	 * The x-coordinate of the Quaternion's Vector Component
+	 */
+	private final double x;
+
+	/**
+	 * The y-coordinate of the Quaternion's Vector Component
+	 */
+	private final double y;
+
+	/**
+	 * The z-coordinate of the Quaternion's Vector Component
+	 */
+	private final double z;
 	private double norm = -1;
 
 	/**
