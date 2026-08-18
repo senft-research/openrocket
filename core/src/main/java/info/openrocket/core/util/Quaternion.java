@@ -302,7 +302,8 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Rotate the provided {@link MutableCoordinate} in place using this quaternion.
+	 * Rotate the provided {@link MutableCoordinate} in place using this quaternion. Utilised to ensure no unnecessary
+	 * Garbage is instantiated (unlike {@code Quaternion.rotate()}).
 	 *
 	 * @param coord the mutable coordinate to rotate; updated with the rotated components
 	 * @return the same instance for chaining
@@ -312,6 +313,7 @@ public class Quaternion implements Cloneable {
 		double cy = coord.getY();
 		double cz = coord.getZ();
 
+		//qv , calculated via Equation 4.11 in Sampo's paper, with w = 0
 		double a = -x * cx - y * cy - z * cz;
 		double b = w * cx + y * cz - z * cy;
 		double c = w * cy - x * cz + z * cx;
@@ -319,7 +321,7 @@ public class Quaternion implements Cloneable {
 
 		assert (Math.abs(a * w + b * x + c * y + d * z) <= coord.max() * MathUtil.EPSILON)
 				: ("Should be zero: " + (a * w + b * x + c * y + d * z) + " in " + this + " c=" + coord);
-
+		//qv*(q^-1) , as per Equation 4.14 in Sampo's paper
 		double newX = -a * x + b * w - c * z + d * y;
 		double newY = -a * y + b * z + c * w - d * x;
 		double newZ = -a * z - b * y + c * x + d * w;
@@ -328,7 +330,8 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Perform an inverse coordinate rotation in place using this unit quaternion.
+	 * Perform an inverse coordinate rotation in place using this unit quaternion. Utilised to ensure no unnecessary Garbage
+	 * is instantiated (unlike {@code Quaternion.invRotate()}).
 	 *
 	 * @param coord the mutable coordinate to rotate; updated with the rotated components
 	 * @return the same instance for chaining
@@ -338,6 +341,7 @@ public class Quaternion implements Cloneable {
 		double cy = coord.getY();
 		double cz = coord.getZ();
 
+		//(q^-1)v , calculated via Equation 4.11 in Sampo's paper, with w = 0
 		double a = x * cx + y * cy + z * cz;
 		double b = w * cx - y * cz + z * cy;
 		double c = w * cy + x * cz - z * cx;
@@ -345,7 +349,7 @@ public class Quaternion implements Cloneable {
 
 		assert (Math.abs(a * w - b * x - c * y - d * z) < Math.max(coord.max(), 1) * MathUtil.EPSILON)
 				: ("Should be zero: " + (a * w - b * x - c * y - d * z) + " in " + this + " c=" + coord);
-
+		//(q^-1)v*q , as per Equation 4.15 in Sampo's paper
 		double newX = a * x + b * w + c * z - d * y;
 		double newY = a * y - b * z + c * w + d * x;
 		double newZ = a * z + b * y - c * x + d * w;
