@@ -286,6 +286,22 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
+	 * Perform an inverse coordinate rotation using this unit quaternion. The process is the same as {@code Quaternion.rotate()},
+	 * but instead the rotation is performed utilising equation 4.15 from Sampo's Paper.
+	 * @param coordinate The inversely rotated coordinate.
+	 * @return The inversely rotated coordinate.
+	 */
+	public CoordinateIF invRotate(CoordinateIF coordinate){
+		Quaternion inverseQuat= new Quaternion(w, -this.x, -this.y, -this.z);
+		Quaternion coordinateQuat = new Quaternion(0, coordinate.getX(), coordinate.getY(), coordinate.getZ());
+
+		//Equation 4.15 of Sampo's Paper: (q^-1)*v*q
+		Quaternion rotationQuat = inverseQuat.multiplyRight(coordinateQuat).multiplyRight(this);
+
+		return new Coordinate(rotationQuat.getX(), rotationQuat.getY(), rotationQuat.getZ(), coordinate.getWeight());
+	}
+
+	/**
 	 * Rotate the provided {@link MutableCoordinate} in place using this quaternion.
 	 *
 	 * @param coord the mutable coordinate to rotate; updated with the rotated components
@@ -309,17 +325,6 @@ public class Quaternion implements Cloneable {
 		double newZ = -a * z - b * y + c * x + d * w;
 
 		return coord.set(newX, newY, newZ, coord.getWeight());
-	}
-
-
-	public CoordinateIF invRotate(CoordinateIF coordinate){
-		Quaternion inverseQuat= new Quaternion(w, -this.x, -this.y, -this.z);
-		Quaternion coordinateQuat = new Quaternion(0, coordinate.getX(), coordinate.getY(), coordinate.getZ());
-
-		//  return = (a,b,c,d) * this = (a,b,c,d) * (w,x,y,z)
-		Quaternion rotationQuat = inverseQuat.multiplyRight(coordinateQuat).multiplyRight(this);
-
-		return new Coordinate(rotationQuat.getX(), rotationQuat.getY(), rotationQuat.getZ(), coordinate.getWeight());
 	}
 
 	/**
