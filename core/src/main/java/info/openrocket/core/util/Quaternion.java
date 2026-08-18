@@ -311,36 +311,15 @@ public class Quaternion implements Cloneable {
 		return coord.set(newX, newY, newZ, coord.getWeight());
 	}
 
-	/**
-	 * Perform an inverse coordinate rotation using this unit quaternion. The result
-	 * is
-	 * <code>this^(-1) * coord * this</code>.
-	 * <p>
-	 * This method assumes that the norm of this quaternion is one.
-	 * 
-	 * @param coord the coordinate to rotate.
-	 * @return the rotated coordinate.
-	 */
-	public CoordinateIF invRotate(CoordinateIF coord) {
-		double a, b, c, d;
 
-		assert (Math.abs(normSquare() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
+	public CoordinateIF invRotate(CoordinateIF coordinate){
+		Quaternion inverseQuat= new Quaternion(w, -this.x, -this.y, -this.z);
+		Quaternion coordinateQuat = new Quaternion(0, coordinate.getX(), coordinate.getY(), coordinate.getZ());
 
-		// (a,b,c,d) = (this)^-1 * coord = (w,-x,-y,-z) * (0,cx,cy,cz)
-		a = x * coord.getX() + y * coord.getY() + z * coord.getZ();
-		b = w * coord.getX() - y * coord.getZ() + z * coord.getY();
-		c = w * coord.getY() + x * coord.getZ() - z * coord.getX();
-		d = w * coord.getZ() - x * coord.getY() + y * coord.getX();
+		//  return = (a,b,c,d) * this = (a,b,c,d) * (w,x,y,z)
+		Quaternion rotationQuat = inverseQuat.multiplyRight(coordinateQuat).multiplyRight(this);
 
-		// return = (a,b,c,d) * this = (a,b,c,d) * (w,x,y,z)
-		assert (Math.abs(a * w - b * x - c * y - d * z) < Math.max(coord.max(), 1) * MathUtil.EPSILON)
-				: ("Should be zero: " + (a * w - b * x - c * y - d * z) + " in " + this + " c=" + coord);
-
-		return new Coordinate(
-				a * x + b * w + c * z - d * y,
-				a * y - b * z + c * w + d * x,
-				a * z + b * y - c * x + d * w,
-				coord.getWeight());
+		return new Coordinate(rotationQuat.getX(), rotationQuat.getY(), rotationQuat.getZ(), coordinate.getWeight());
 	}
 
 	/**
