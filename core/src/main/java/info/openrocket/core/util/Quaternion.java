@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An immutable quaternion class.
+ * An immutable class that represents a quaternion. Quaternions, as described by section 4.2.2 in Sampo's Paper,
+ * is an algebraic object that are represented by both a Scalar and Vector Components. Their primary use within OpenRocket
+ * is for calculations involving 3-dimensional rotatations (with Vectors considered as quaternions that have no
+ * scalar component). Hence, Quaternions see extensive use within the Simulation Calculations.
  * 
  * @author Sampo Niskanen <sampo.niskanen@iki.fi>
  */
