@@ -152,35 +152,60 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Multiply this quaternion by the other quaternion from the right side. This
-	 * calculates the product <code>result = this * other</code>.
-	 * 
-	 * @param other the quaternion to multiply this quaternion by.
-	 * @return this quaternion.
+	 * Multiplies the quaternion by another quaternion, as described in equation 4.11 of Sampo's
+	 * paper.
+	 * @param otherQuat The quaternion to multiply by.
+	 * @return The resulting quaternion of the multiplication.
 	 */
-	public Quaternion multiplyRight(Quaternion other) {
-		double newW = (this.w * other.w - this.getX() * other.getX() - this.getY() * other.getY() - this.getZ() * other.getZ());
-		double newX = (this.w * other.getX() + this.getX() * other.w + this.getY() * other.getZ() - this.getZ() * other.getY());
-		double newY = (this.w * other.getY() + this.getY() * other.w + this.getZ() * other.getX() - this.getX() * other.getZ());
-		double newZ = (this.w * other.getZ() + this.getZ() * other.w + this.getX() * other.getY() - this.getY() * other.getX());
-
-		return new Quaternion(newW, newX, newY, newZ);
+	public Quaternion multiplyRight(Quaternion otherQuat) {
+		return multiply(this,otherQuat);
 	}
 
 	/**
-	 * Multiply this quaternion by the other quaternion from the left side. This
-	 * calculates the product <code>result = other * this</code>.
-	 * 
-	 * @param other the quaternion to multiply this quaternion by.
-	 * @return this quaternion.
+	 * Multiplies another quaternion by this quaternion, as described in equation 4.11 of Sampo's
+	 * paper.
+	 * @param otherQuat The quaternion to multiply by.
+	 * @return The resulting quaternion of the multiplication.
 	 */
-	public Quaternion multiplyLeft(Quaternion other) {
-		/* other(abcd) * this(wxyz) */
+	public Quaternion multiplyLeft(Quaternion otherQuat) {
+		return multiply(otherQuat, this);
+	}
 
-		double newW = (other.w * this.w - other.getX() * this.getX() - other.getY() * this.getY() - other.getZ() * this.getZ());
-		double newX = (other.w * this.getX() + other.getX() * this.w + other.getY() * this.getZ() - other.getZ() * this.getY());
-		double newY = (other.w * this.getY() + other.getY() * this.w + other.getZ() * this.getX() - other.getX() * this.getZ());
-		double newZ = (other.w * this.getZ() + other.getZ() * this.w + other.getX() * this.getY() - other.getY() * this.getX());
+	/**
+	 * Multiplies a quaternion by another quaternion, as described in equation 4.11 of Sampo's
+	 * paper.
+	 * @param firstQuat The left hand quaternion of the multiplication.
+	 * @param secondQuat The right hand quaternion of the multiplication.
+	 * @return The resulting quaternion of the multiplication.
+	 */
+	private Quaternion multiply(Quaternion firstQuat, Quaternion secondQuat){
+		double newW = (
+				firstQuat.w*secondQuat.w
+						- firstQuat.x*secondQuat.x
+						- firstQuat.y*secondQuat.y
+						- firstQuat.z*secondQuat.z
+		);
+
+		double newX = (
+				firstQuat.w*secondQuat.x
+						+ firstQuat.x*secondQuat.w
+						+ firstQuat.y*secondQuat.z
+						- firstQuat.z* secondQuat.y
+		);
+
+		double newY = (
+				firstQuat.w* secondQuat.y
+						- firstQuat.x* secondQuat.z
+						+ firstQuat.y*secondQuat.w
+						+ firstQuat.z*secondQuat.x
+		);
+
+		double newZ = (
+				firstQuat.w* secondQuat.z
+						+ firstQuat.x*secondQuat.y
+						- firstQuat.y*secondQuat.x
+						+ firstQuat.z*secondQuat.w
+		);
 
 		return new Quaternion(newW, newX, newY, newZ);
 	}
