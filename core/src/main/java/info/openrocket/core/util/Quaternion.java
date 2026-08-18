@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Quaternion implements Cloneable {
 	private static final Logger log = LoggerFactory.getLogger(Quaternion.class);
+	private static final double ZERO_QUAT_EQUIVALENT = 0.00001;
 
 	//////// Debug section
 	/*
@@ -266,36 +267,22 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Perform a coordinate rotation using this unit quaternion. The result is
-	 * <code>this * coord * this^(-1)</code>.
-	 * <p>
-	 * This method assumes that the norm of this quaternion is one.
-	 * 
-	 * @param coord the coordinate to rotate.
-	 * @return the rotated coordinate.
+	 * Perform a coordinate rotation using this unit quaternion. The process first multiplies the coordinate by this
+	 * quaternion (Equation 4.1.1 in Sampo's Paper, but with w = 0) and then multiplies the resulting Quaternion by
+	 * this Quaternion's inverse. This corresponds to equation 4.14 of Sampo's Paper.
+	 * @param coordinate The rotated coordinate.
+	 * @return The rotated coordinate.
 	 */
-	public CoordinateIF rotate(CoordinateIF coord) {
-		double a, b, c, d;
+	public CoordinateIF rotate(CoordinateIF coordinate){
+		assert (Math.abs(norm2() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
 
-		assert (Math.abs(norm2() - 1) < 0.00001) : "Quaternion not unit length: " + this;
+		Quaternion inverseQuat= new Quaternion(this.w, -this.x, -this.y, -this.z);
+		Quaternion coordinateQuat = new Quaternion(0, coordinate.getX(), coordinate.getY(), coordinate.getZ());
 
-		// (a,b,c,d) = this * coord = (w,x,y,z) * (0,cx,cy,cz)
-		a = -x * coord.getX() - y * coord.getY() - z * coord.getZ(); // w
-		b = w * coord.getX() + y * coord.getZ() - z * coord.getY(); // x i
-		c = w * coord.getY() - x * coord.getZ() + z * coord.getX(); // y j
-		d = w * coord.getZ() + x * coord.getY() - y * coord.getX(); // z k
+		//Equation 4.14 of Sampo's Paper: q*v*(q^-1)
+		Quaternion rotationQuat = this.multiplyRight(coordinateQuat).multiplyRight(inverseQuat);
 
-		// return = (a,b,c,d) * (this)^-1 = (a,b,c,d) * (w,-x,-y,-z)
-
-		// Assert that the w-value is zero
-		assert (Math.abs(a * w + b * x + c * y + d * z) <= coord.max() * MathUtil.EPSILON)
-				: ("Should be zero: " + (a * w + b * x + c * y + d * z) + " in " + this + " c=" + coord);
-
-		return new Coordinate(
-				-a * x + b * w - c * z + d * y,
-				-a * y + b * z + c * w - d * x,
-				-a * z - b * y + c * x + d * w,
-				coord.getWeight());
+		return new Coordinate(rotationQuat.getX(), rotationQuat.getY(), rotationQuat.getZ(), coordinate.getWeight());
 	}
 
 	/**
@@ -337,7 +324,7 @@ public class Quaternion implements Cloneable {
 	public CoordinateIF invRotate(CoordinateIF coord) {
 		double a, b, c, d;
 
-		assert (Math.abs(norm2() - 1) < 0.00001) : "Quaternion not unit length: " + this;
+		assert (Math.abs(norm2() - 1) < ZERO_QUAT_EQUIVALENT) : "Quaternion not unit length: " + this;
 
 		// (a,b,c,d) = (this)^-1 * coord = (w,-x,-y,-z) * (0,cx,cy,cz)
 		a = x * coord.getX() + y * coord.getY() + z * coord.getZ();
