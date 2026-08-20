@@ -115,12 +115,11 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Create a rotation quaternion corresponding to the rotation around the
-	 * provided vector with
-	 * the provided angle.
+	 * Create a rotation quaternion corresponding to the rotation around the provided vector with the provided angle, as
+	 * per equation 4.13 in Sampo's Paper.
 	 * 
 	 * @param axis  the rotation axis
-	 * @param angle the rotation angle
+	 * @param angle the rotation angle (in radians)
 	 * @return the corresponding quaternion
 	 */
 	public static Quaternion rotation(CoordinateIF axis, double angle) {
@@ -246,21 +245,22 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Return the norm of this quaternion.
+	 * Return the norm of this quaternion {@code sqrt(w^2 + x^2 + y^2 + z^2)}, as per equation 4.12 of Sampo's Paper.
 	 * 
-	 * @return the norm of this quaternion sqrt(w^2 + x^2 + y^2 + z^2).
+	 * @return the norm of this quaternion.
 	 */
 	public double norm() {
 		if (norm < 0) {
-			norm = MathUtil.safeSqrt(x * x + y * y + z * z + w * w);
+			norm = MathUtil.safeSqrt(normSquare());
 		}
 		return norm;
 	}
 
 	/**
-	 * Return the square of the norm of this quaternion.
+	 * Return the square of the norm of this quaternion {@code sqrt(w^2 + x^2 + y^2 + z^2)}, as per equation 4.12 of
+	 * Sampo's Paper.
 	 * 
-	 * @return the square of the norm of this quaternion (w^2 + x^2 + y^2 + z^2).
+	 * @return the square of the norm of this quaternion
 	 */
 	public double normSquare() {
 		return x * x + y * y + z * z + w * w;
@@ -358,11 +358,9 @@ public class Quaternion implements Cloneable {
 	}
 
 	/**
-	 * Rotate the coordinate (0,0,1) using this quaternion. The result is returned
-	 * as a Coordinate. This method is equivalent to calling
-	 * <code>q.rotate(new Coordinate(0,0,1))</code> but requires only about half of
-	 * the
-	 * multiplications.
+	 * Rotate the coordinate (0,0,1) using this quaternion. The result is returned as a Coordinate. This method is
+	 * equivalent to calling <code>Quaternion.rotate(new Coordinate(0,0,1))</code> (as per Equation 4.14 of Sampo's Paper)
+	 * but requires only about half of the multiplications.
 	 * 
 	 * @return The coordinate (0,0,1) rotated using this quaternion.
 	 */
