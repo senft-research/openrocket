@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class QuaternionTest {
@@ -22,6 +24,14 @@ public class QuaternionTest {
 	private final double DELTA_3SF = 1e-3;
 	private final double DELTA_5SF = 1e-5;
 	private final double DELTA_12SF = 1e-12;
+	private Quaternion testQuat;
+	private CoordinateIF testCoordinate;
+	@BeforeEach
+	public void setup(){
+		this.testQuat = new Quaternion(testW, testX, testY, testZ);
+		this.testCoordinate = new Coordinate(TEST_COORDINATE_X, TEST_COORDINATE_Y, TEST_COORDINATE_Z);
+	}
+
 	@Test
 	public void oldMainTest() {
 
