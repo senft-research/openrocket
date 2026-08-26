@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +25,7 @@ public class QuaternionTest {
 	private final double DELTA_12SF = 1e-12;
 	private Quaternion testQuat;
 	private CoordinateIF testCoordinate;
+
 	@BeforeEach
 	public void setup(){
 		this.testQuat = new Quaternion(testW, testX, testY, testZ);
@@ -33,17 +33,38 @@ public class QuaternionTest {
 	}
 
 	@Test
+	public void isQuaternionNormalised(){
+		assertEquals(1.0, this.testQuat.norm(), DELTA_2SF);
+	}
+
+	@Test
+	public void isNormalizedQuaternionWCorrect(){
+		this.testQuat.normalize();
+		assertEquals(testW, this.testQuat.getW(), DELTA_5SF);
+	}
+
+	@Test
+	public void isNormalizedQuaternionXCorrect(){
+		this.testQuat.normalize();
+		assertEquals(testX, this.testQuat.getX(), DELTA_5SF);
+	}
+
+	@Test
+	public void isNormalizedQuaternionYCorrect(){
+		this.testQuat.normalize();
+		assertEquals(testY, this.testQuat.getY(), DELTA_5SF);
+	}
+
+	@Test
+	public void isNormalizedQuaternionZCorrect(){
+		this.testQuat.normalize();
+		assertEquals(testZ, this.testQuat.getZ(), DELTA_5SF);
+	}
+
+	@Test
 	public void oldMainTest() {
-
-		// This is normalized already
 		Quaternion q = new Quaternion(testW, testX, testY, testZ);
-		assertEquals(1.0, q.norm(), 0.01);
-
 		q.normalize();
-		assertEquals(testW, q.getW(), DELTA_5SF);
-		assertEquals(testX, q.getX(), DELTA_5SF);
-		assertEquals(testY, q.getY(), DELTA_5SF);
-		assertEquals(testZ, q.getZ(), DELTA_5SF);
 		assertEquals(1.0, q.norm(), DELTA_2SF);
 
 		CoordinateIF c = new Coordinate(TEST_COORDINATE_X, TEST_COORDINATE_Y, TEST_COORDINATE_Z);
