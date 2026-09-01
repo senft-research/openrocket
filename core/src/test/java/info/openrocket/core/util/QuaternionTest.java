@@ -26,6 +26,8 @@ public class QuaternionTest {
 	private final double EXPECTED_ROTATED_X = -42312599.537;
 	private final double EXPECTED_ROTATED_Y = -48162747.551;
 	private final double EXPECTED_ROTATED_Z = 134281904.197;
+	private final CoordinateIF FORTY_FIVE_DEGREE_ROTATION_COORDINATE = new Coordinate(Math.PI / 4, 0, 0);
+	private final CoordinateIF Y_UNIT_COORDINATE = new Coordinate(0, 1, 0);
 
 
 	private Quaternion testQuat;
@@ -37,6 +39,12 @@ public class QuaternionTest {
 		this.testQuat = new Quaternion(testW, testX, testY, testZ);
 		this.testCoordinate = new Coordinate(TEST_COORDINATE_X, TEST_COORDINATE_Y, TEST_COORDINATE_Z);
 		this.testRotatedCoordinate = this.testQuat.rotate(testCoordinate);
+	}
+
+	@Test
+	public void testQuatIsNormalised(){
+		assertEquals(1.0, this.testQuat.norm(), DELTA_2SF);
+
 	}
 
 	@Test
@@ -84,24 +92,11 @@ public class QuaternionTest {
 	}
 
 	@Test
-	public void oldMainTest() {
-		Quaternion q = new Quaternion(testW, testX, testY, testZ);
-
-		q.normalize();
-		assertEquals(1.0, q.norm(), DELTA_2SF);
-
-		CoordinateIF c = new Coordinate(TEST_COORDINATE_X, TEST_COORDINATE_Y, TEST_COORDINATE_Z);
-
-		CoordinateIF r = q.rotate(c);
-
-		c = new Coordinate(0, 1, 0);
-		CoordinateIF rot = new Coordinate(Math.PI / 4, 0, 0);
-
-		c = Quaternion.rotation(rot).invRotate(c);
-
-		assertEquals(0.0, c.getX(), DELTA_3SF);
-		assertEquals(0.707, c.getY(), DELTA_3SF);
-		assertEquals(-0.707, c.getZ(), DELTA_3SF);
+	public void fortyFiveDegreeInvRotationCorrectX(){
+		CoordinateIF rotatedCoordinate = Quaternion.rotation(FORTY_FIVE_DEGREE_ROTATION_COORDINATE).invRotate(Y_UNIT_COORDINATE);
+		assertEquals(0.0, rotatedCoordinate.getX(), DELTA_3SF);
+		assertEquals(0.707, rotatedCoordinate.getY(), DELTA_3SF);
+		assertEquals(-0.707, rotatedCoordinate.getZ(), DELTA_3SF);
 	}
 
 	@Test
